@@ -51,13 +51,10 @@ This is the eighth project to team tree house's Python Web Tech Degree.
 1. Install pipenv by typing `pip install pipenv` or `pip3 install pipenv` for python3 users
 2. In project root folder, install dependencies by typing `pipenv install`
 3. In project root folder, enter virtual environment by typing `pipenv shell`
-4. In `mineral_catalog` of project root folder, run `python manage.py migrate` or `python3 manage.py migrate` for python3 users.
-5. In `mineral_catalog` of project root folder, run `python manage.py createsuperuser` or `python3 manage.py createsuperuser` to create an admin
-6. In `mineral_catalog` of project root folder, run `python manage.py loaddata minerals.json` or `python3 manage.py loaddata minerals.json` to pre-populate data
-7. In `mineral_catalog` of project root folder, run by typing `python manage.py runserver` or `python3 manage.py runserver` for python3 users.
-8. Open chrome and enter given url (i.e. `http://127.0.0.1:8000/`)
-9. Once done, exit django by pressing `Ctrl`+`C` and virtual environment by typing `exit`
-
-## FAQ
-1. Q: How would a user know which version of python is installed as default?
-    - A: Python version can be found by typing `python --version` in terminal. If X in `X.*.*` is 2, then python 2 is installed as default, and if it's 3, then python 3 is being used as default.
+4. In `mineral_catalog` of project root folder, run `python manage.py makemigrations website`
+5. In `mineral_catalog` of project root folder, run `python manage.py migrate`
+6. In `mineral_catalog` of project root folder, run `python manage.py createsuperuser`
+7. In `mineral_catalog` of project root folder, run `python manage.py loaddata minerals.json`
+8. In `mineral_catalog` of project root folder, run by typing `python manage.py runserver`
+9. Open chrome and enter given url (i.e. `http://127.0.0.1:8000/`)
+10. Once done, exit django by pressing `Ctrl`+`C` and virtual environment by typing `exit`
