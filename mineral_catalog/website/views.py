@@ -3,15 +3,29 @@ import random
 
 from .models import Mineral
 
+
 # Create your views here.
-
-
 def home_page(request):
-    # import all items from database
-    minerals = Mineral.objects.all()
+    # initialize
+    alphabets = [chr(x) for x in range(97, 123)]
+
+    # get queries if exists
+    q = request.GET.get('q', '')
+
+    if q:
+        minerals = Mineral.objects.filter(name__istartswith=q)
+    else:
+        # import all items from database
+        try:
+            minerals = Mineral.objects.all()
+        except Mineral.DoesNotExist:
+            minerals = []
 
     # load items to view
-    return render(request, 'website/home_page.html', {'minerals': minerals})
+    return render(request, 'website/home_page.html', {
+        'minerals': minerals,
+        'alphabets': alphabets
+        })
 
 
 def mineral_detail(request, mineral_pk):

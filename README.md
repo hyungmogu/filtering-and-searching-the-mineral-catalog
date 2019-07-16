@@ -3,7 +3,7 @@
 This is the eighth project to team tree house's Python Web Tech Degree.
 
 ## Goal
-- Refine 'Mineral Catalog' project by adding an ability to search information and filter it to match user preferences.
+- Refine previously developed 'Mineral Catalog' project by adding an ability to search information and filter it to match user preferences.
 
 ## Deliverables / Objectives
 1. Allow filtering by the first letter of the mineral name.

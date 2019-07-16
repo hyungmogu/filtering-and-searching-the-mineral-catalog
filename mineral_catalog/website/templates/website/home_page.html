@@ -1,6 +1,11 @@
 {% extends 'website/layout.html' %}
 
 {% block content %}
+    <div class="text-centered">
+        {% for letter in alphabets %}
+            <a href="?q={{ letter }}">{{ letter | upper }}</a>
+        {% endfor %}
+    </div>
     <ul class="minerals__container">
         {% for mineral in minerals %}
             <li class="minerals__item">
