@@ -1,5 +1,6 @@
 {% load static from staticfiles %}
 {% url 'mineral' as detail_page %}
+{% url 'home' as home_page %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,5 +31,10 @@
         {% block content %}{% endblock %}
     </div>
   </div>
+  {% if request.path == home_page %}
+    <div class="minerals__random">
+        <a class="minerals__anchor" href="{% url 'random' %}">Show random mineral</a>
+    </div>
+  {% endif %}
 </body>
 </html>
