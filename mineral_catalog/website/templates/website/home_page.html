@@ -6,11 +6,23 @@
             <a href="?q={{ letter }}">{{ letter | upper }}</a>
         {% endfor %}
     </div>
-    <ul class="minerals__container">
-        {% for mineral in minerals %}
-            <li class="minerals__item">
-                <a class="minerals__anchor" href="{% url 'mineral' mineral_pk=mineral.pk %}">{{ mineral.name }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <form class="text-centered" method="GET" action="">
+        <div style="display: flex;">
+            <input type="text" name="q" style="flex-grow: grow;" placeholder="Type here to filter by texts">
+            <input type="submit" value="search" class="minerals__anchor" style="width: 100px;">
+        </div>
+    </form>
+        {% if minerals.count > 0 %}
+            <ul class="minerals__container">
+                {% for mineral in minerals %}
+                    <li class="minerals__item">
+                        <a class="minerals__anchor" href="{% url 'mineral' mineral_pk=mineral.pk %}">{{ mineral.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="minerals__container">
+                No minerals found
+            </div>
+        {% endif %}
 {% endblock %}
