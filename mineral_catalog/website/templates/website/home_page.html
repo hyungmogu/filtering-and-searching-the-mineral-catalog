@@ -1,6 +1,6 @@
 {% extends 'website/layout.html' %}
 
-{% block content %}
+{% block precontent %}
     <div class="text-centered">
         {% for letter in alphabets %}
             <a href="?q={{ letter }}">{{ letter | upper }}</a>
@@ -12,17 +12,28 @@
             <input type="submit" value="search" class="minerals__anchor" style="width: 100px;">
         </div>
     </form>
-        {% if minerals.count > 0 %}
-            <ul class="minerals__container">
-                {% for mineral in minerals %}
-                    <li class="minerals__item">
-                        <a class="minerals__anchor" href="{% url 'mineral' mineral_pk=mineral.pk %}">{{ mineral.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <div class="minerals__container">
-                No minerals found
-            </div>
-        {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+    <ul>
+        {% for item in group %}
+            <li><a class="{% if selected_group == item.group %} selected {% endif %}" href="?q_by_group={{ item.group }}">{{ item.group }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+    {% if minerals.count > 0 %}
+        <ul class="minerals__container">
+            {% for mineral in minerals %}
+                <li class="minerals__item">
+                    <a class="minerals__anchor" href="{% url 'mineral' mineral_pk=mineral.pk %}">{{ mineral.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="minerals__container">
+            No minerals found
+        </div>
+    {% endif %}
 {% endblock %}

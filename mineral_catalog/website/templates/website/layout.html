@@ -27,8 +27,14 @@
       </a>
       <p class="logo__text text-centered">They're not rocks!</p>
     </div>
-    <div class="grid-100 {% if request.path == detail_page %} mineral__container {% endif %} ">
-        {% block content %}{% endblock %}
+    <div class="grid-100">
+      {% block precontent %}{% endblock %}
+    </div>
+    <div class="grid-25">
+      {% block sidebar %}{% endblock %}
+    </div>
+    <div class="grid-75 {% if request.path == detail_page %} mineral__container {% endif %}">
+      {% block content %}{% endblock %}
     </div>
   </div>
   {% if request.path == home_page %}

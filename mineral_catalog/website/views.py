@@ -8,12 +8,16 @@ from .models import Mineral
 def home_page(request):
     # initialize
     alphabets = [chr(x) for x in range(97, 123)]
+    group = Mineral.objects.order_by('group').values('group').distinct()
 
     # get queries if exists
     q = request.GET.get('q', '')
+    q_by_group = request.GET.get('q_by_group', '')
 
     if q:
         minerals = Mineral.objects.filter(name__istartswith=q)
+    elif q_by_group:
+        minerals = Mineral.objects.filter(group__iexact=q_by_group)
     else:
         # import all items from database
         try:
@@ -24,16 +28,29 @@ def home_page(request):
     # load items to view
     return render(request, 'website/home_page.html', {
         'minerals': minerals,
-        'alphabets': alphabets
+        'alphabets': alphabets,
+        'group': group,
+        'selected_group': q_by_group
         })
 
 
 def mineral_detail(request, mineral_pk):
+    group = Mineral.objects.order_by('group').values('group').distinct()
+
+    q_by_group = request.GET.get('q_by_group', '')
+
+    if q_by_group:
+        # redirect to homepage with the query parameter
+        return redirect('/?q_by_group={0}'.format(q_by_group))
+
     # fetch specific object based on pk
     mineral = get_object_or_404(Mineral, pk=mineral_pk)
 
     # load item to view
-    return render(request, 'website/detail.html', {'mineral': mineral})
+    return render(request, 'website/detail.html', {
+        'mineral': mineral,
+        'group': group
+    })
 
 
 def random_mineral(request):
