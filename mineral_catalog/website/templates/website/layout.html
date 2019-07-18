@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-{% url 'mineral' as detail_page %}
+{% url 'mineral' mineral_pk=mineral.pk as detail_page %}
 {% url 'home' as home_page %}
 
 <!DOCTYPE html>
