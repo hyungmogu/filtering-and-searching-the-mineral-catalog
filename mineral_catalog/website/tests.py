@@ -53,8 +53,8 @@ class MineralModelTest(TestCase):
 # VIEW TEST
 
 
-class MineralDetailPageTestCase(TestCase):
-    '''Tests for the Article detail view'''
+class MineralHomePageTestCase(TestCase):
+    '''Tests for the home page view'''
 
     def setUp(self):
         self.mineral1 = Mineral.objects.create(
@@ -110,48 +110,50 @@ class MineralDetailPageTestCase(TestCase):
     def test_return_homehtml_as_template_used(self):
         self.assertTemplateUsed(self.resp, 'website/home.html')
 
-    def test_return_info_of_added_minerals(self):
-        self.assertContains(self.resp.context['minerals'], self.mineral1.name)
-        self.assertContains(self.resp.context['minerals'], self.mineral2.name)
+    # check and see if it passes the list of mineral names to view
+    def test_return_list_of_mineral_names(self):
+
+        self.assertIn(self.mineral1, self.resp.context['minerals'])
+        self.assertIn(self.mineral2, self.resp.context['minerals'])
 
 
-class MineralDetailPageTestCase(TestCase):
-    '''Tests for the Article detail view'''
+# class MineralDetailPageTestCase(TestCase):
+#     '''Tests for the Article detail view'''
 
-    def setUp(self):
-        self.mineral = Mineral.objects.create(
-            category="Organic",
-            streak="Pink",
-            optical_properties="Biaxial",
-            group="Organic Minerals",
-            name="Abelsonite",
-            diaphaneity="Semitransparent",
-            color="Pink-purple, dark greyish purple, pale purplish red, reddish brown",
-            unit_cell="a = 8.508 \u00c5, b = 11.185 \u00c5c=7.299 \u00c5, \u03b1 = 90.85\u00b0\u03b2 = 114.1\u00b0, \u03b3 = 79.99\u00b0Z = 1",
-            strunz_classification="10.CA.20",
-            mohs_scale_hardness="2\u20133",
-            crystal_symmetry="Space group: P1 or P1Point group: 1 or 1",
-            cleavage="Probable on {111}",
-            formula="C<sub>31</sub>H<sub>32</sub>N<sub>4</sub>Ni",
-            luster="Adamantine, sub-metallic",
-            crystal_system="Triclinic",
-            image_caption="Abelsonite from the Green River Formation, Uintah County, Utah, US",
-            image_filename="Abelsonite.jpg"
-        )
+#     def setUp(self):
+#         self.mineral = Mineral.objects.create(
+#             category="Organic",
+#             streak="Pink",
+#             optical_properties="Biaxial",
+#             group="Organic Minerals",
+#             name="Abelsonite",
+#             diaphaneity="Semitransparent",
+#             color="Pink-purple, dark greyish purple, pale purplish red, reddish brown",
+#             unit_cell="a = 8.508 \u00c5, b = 11.185 \u00c5c=7.299 \u00c5, \u03b1 = 90.85\u00b0\u03b2 = 114.1\u00b0, \u03b3 = 79.99\u00b0Z = 1",
+#             strunz_classification="10.CA.20",
+#             mohs_scale_hardness="2\u20133",
+#             crystal_symmetry="Space group: P1 or P1Point group: 1 or 1",
+#             cleavage="Probable on {111}",
+#             formula="C<sub>31</sub>H<sub>32</sub>N<sub>4</sub>Ni",
+#             luster="Adamantine, sub-metallic",
+#             crystal_system="Triclinic",
+#             image_caption="Abelsonite from the Green River Formation, Uintah County, Utah, US",
+#             image_filename="Abelsonite.jpg"
+#         )
 
-        self.resp = self.client.get(reverse(
-            'mineral',
-            kwargs={'mineral_pk': self.mineral.pk}
-        ))
+#         self.resp = self.client.get(reverse(
+#             'mineral',
+#             kwargs={'mineral_pk': self.mineral.pk}
+#         ))
 
-    def test_return_status_okay(self):
-        self.assertEqual(self.resp.status_code, 200)
+#     def test_return_status_okay(self):
+#         self.assertEqual(self.resp.status_code, 200)
 
-    def test_return_layouthtml_as_template_used(self):
-        self.assertTemplateUsed(self.resp, 'website/layout.html')
+#     def test_return_layouthtml_as_template_used(self):
+#         self.assertTemplateUsed(self.resp, 'website/layout.html')
 
-    def test_return_detailhtml_as_template_used(self):
-        self.assertTemplateUsed(self.resp, 'website/detail.html')
+#     def test_return_detailhtml_as_template_used(self):
+#         self.assertTemplateUsed(self.resp, 'website/detail.html')
 
-    def test_return_info_of_added_mineral(self):
-        self.assertContains(self.resp, self.mineral.name)
+#     def test_return_info_of_added_mineral(self):
+#         self.assertContains(self.resp, self.mineral.name)
