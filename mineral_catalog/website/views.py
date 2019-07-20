@@ -26,7 +26,7 @@ def home_page(request):
             minerals = []
 
     # load items to view
-    return render(request, 'website/home_page.html', {
+    return render(request, 'website/home.html', {
         'minerals': minerals,
         'alphabets': alphabets,
         'group': group,
