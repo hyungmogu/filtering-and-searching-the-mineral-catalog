@@ -17,6 +17,8 @@ from django.conf.urls import (url, include)
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+from . import settings
+
 urlpatterns = [
     url(r'', include('website.urls')),
     url(r'^admin/', admin.site.urls),
@@ -24,3 +26,11 @@ urlpatterns = [
 
 # this is done to include css files
 urlpatterns += staticfiles_urlpatterns()
+
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'website',
 ]
 
@@ -49,6 +50,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'mineral_catalog.urls'
@@ -71,6 +73,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mineral_catalog.wsgi.application'
 
+INTERNAL_IPS = ['127.0.0.1', '::1', '0.0.0.0']
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
