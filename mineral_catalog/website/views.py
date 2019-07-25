@@ -13,10 +13,20 @@ def home_page(request):
     # get queries if exists
     q = request.GET.get('q', '')
     q_by_group = request.GET.get('q_by_group', '')
+    q_by_text = request.GET.get('q_by_text', '')
 
     if q:
         minerals = Mineral.objects.filter(
             name__istartswith=q
+        ).order_by(
+            'name'
+        ).values(
+            'id', 'pk', 'name'
+        )
+
+    elif q_by_text:
+        minerals = Mineral.objects.filter(
+            name__icontains=q_by_text
         ).order_by(
             'name'
         ).values(
