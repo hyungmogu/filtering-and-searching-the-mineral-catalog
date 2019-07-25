@@ -39,7 +39,7 @@ This is the eighth project to team tree house's Python Web Tech Degree.
     - Look at the example HTML files and global.css to determine the styles used in the pages.
 
 ## Steps to running testing program
-1. Once in project root folder of virtual environment (`step 3` under Steps to Running/Exiting the Program), type `coverage run --source='.' manage.py website` to setup info about the % of code covered
+1. Once in project root folder of virtual environment (`step 3` under Steps to Running/Exiting the Program), type `coverage run --source='.' manage.py test website` to setup info about the % of code covered
 2. In project root folder, type `python manage.py test` to run the testing program
 3. In project root folder, type `coverage report` to see the result
 
