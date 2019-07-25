@@ -51,8 +51,6 @@ class MineralModelTest(TestCase):
 
 
 # VIEW TEST
-
-
 class MineralHomePageTestCase(TestCase):
     '''Tests for the home page view'''
 
@@ -117,6 +115,51 @@ class MineralHomePageTestCase(TestCase):
         self.assertIn(self.mineral2, self.resp.context['minerals'])
 
 
+class MineralDetailPageTestCase(TestCase):
+    '''Tests for the Article detail view'''
+
+    def setUp(self):
+        self.mineral = Mineral.objects.create(
+            category="Organic",
+            streak="Pink",
+            optical_properties="Biaxial",
+            group="Organic Minerals",
+            name="Abelsonite",
+            diaphaneity="Semitransparent",
+            color="Pink-purple, dark greyish purple, pale purplish red, reddish brown",
+            unit_cell="a = 8.508 \u00c5, b = 11.185 \u00c5c=7.299 \u00c5, \u03b1 = 90.85\u00b0\u03b2 = 114.1\u00b0, \u03b3 = 79.99\u00b0Z = 1",
+            strunz_classification="10.CA.20",
+            mohs_scale_hardness="2\u20133",
+            crystal_symmetry="Space group: P1 or P1Point group: 1 or 1",
+            cleavage="Probable on {111}",
+            formula="C<sub>31</sub>H<sub>32</sub>N<sub>4</sub>Ni",
+            luster="Adamantine, sub-metallic",
+            crystal_system="Triclinic",
+            image_caption="Abelsonite from the Green River Formation, Uintah County, Utah, US",
+            image_filename="Abelsonite.jpg"
+        )
+
+        self.resp = self.client.get(reverse(
+            'mineral',
+            kwargs={'mineral_pk': self.mineral.pk}
+        ))
+
+    def test_return_status_okay(self):
+        self.assertEqual(self.resp.status_code, 200)
+
+    def test_return_layouthtml_as_template_used(self):
+        self.assertTemplateUsed(self.resp, 'website/layout.html')
+
+    def test_return_detailhtml_as_template_used(self):
+        self.assertTemplateUsed(self.resp, 'website/detail.html')
+
+    def test_return_info_of_added_mineral(self):
+        self.assertContains(self.resp, self.mineral.name)
+
+
+# Filter Test
+
+
 class MineralFilterByGroupTestCase(TestCase):
     '''Tests for filter by Group'''
 
@@ -177,25 +220,28 @@ class MineralFilterByGroupTestCase(TestCase):
         self.assertEqual(self.resp_detail.status_code, 200)
 
     def test_return_status_redirect_on_query(self):
-        self.resp_group_detail = self.client.get(
+        expected = '/?q_by_group={0}'.format(self.mineral2.group)
+
+        result = self.client.get(
             '/{0}/'.format(self.mineral1.pk),
             {'q_by_group': self.mineral2.group}
         )
 
-        self.assertRedirects(
-            self.resp_group_detail,
-            '/?q_by_group={0}'.format(self.mineral2.group)
-        )
+        self.assertRedirects(result, expected)
 
     def test_return_phosphate_if_queried_object_is_phosphates(self):
-        self.resp_group_home = self.client.get('/', {
+        expected_dict = {'id': 2, 'pk': 2, 'name': 'Za\u00efrite'}
+        expected_length = 1
+
+        temp = self.client.get('/', {
             'q_by_group': self.mineral2.group
         })
+        result_length = len(temp.context['minerals'])
+        result_dict = temp.context['minerals'][0]
 
         # check and see if self.resp.context['group'] matches
-        self.assertIn(
-            self.mineral2,
-            self.resp_group_home.context['minerals'])
+        self.assertEqual(result_length, expected_length)
+        self.assertDictEqual(result_dict, expected_dict)
 
 
 class MineralFilterByFirstLetterTestCase(TestCase):
@@ -260,37 +306,36 @@ class MineralFilterByFirstLetterTestCase(TestCase):
 
     def test_return_elements_with_a_if_queried_with_letter_a(self):
         expected_length = 1
-        expected_mineral = self.mineral1
+        expected_dict = {'id': 1, 'pk': 1, 'name': 'Abelsonite'}
 
         resp = self.client.get('/', {
             'q': 'A'
         })
 
         result = resp.context['minerals']
-        result_mineral = result[0]
+        result_dict = result[0]
         result_length = len(result)
 
-        self.assertEqual(expected_length, result_length)
-        self.assertEqual(expected_mineral, result_mineral)
+        self.assertEqual(result_length, expected_length)
+        self.assertDictEqual(result_dict, expected_dict)
 
     def test_return_elements_with_z_if_queried_with_letter_z(self):
         expected_length = 1
-        expected_mineral = self.mineral2
+        expected_dict = {'id': 2, 'pk': 2, 'name': 'Za\u00efrite'}
 
         resp = self.client.get('/', {
             'q': 'Z'
         })
 
         result = resp.context['minerals']
-        result_mineral = result[0]
+        result_dict = result[0]
         result_length = len(result)
 
-        self.assertEqual(expected_length, result_length)
-        self.assertEqual(expected_mineral, result_mineral)
+        self.assertEqual(result_length, expected_length)
+        self.assertDictEqual(result_dict, expected_dict)
 
     def test_return_empty_for_all_other_letters(self):
         expected_length = 0
-        expected_mineral = self.mineral2
 
         for ascii_num in range(97, 123):
             letter = chr(ascii_num)
@@ -304,46 +349,5 @@ class MineralFilterByFirstLetterTestCase(TestCase):
             result = resp.context['minerals']
             result_length = len(result)
 
-            self.assertEqual(expected_length, result_length)
+            self.assertEqual(result_length, expected_length)
 
-
-class MineralDetailPageTestCase(TestCase):
-    '''Tests for the Article detail view'''
-
-    def setUp(self):
-        self.mineral = Mineral.objects.create(
-            category="Organic",
-            streak="Pink",
-            optical_properties="Biaxial",
-            group="Organic Minerals",
-            name="Abelsonite",
-            diaphaneity="Semitransparent",
-            color="Pink-purple, dark greyish purple, pale purplish red, reddish brown",
-            unit_cell="a = 8.508 \u00c5, b = 11.185 \u00c5c=7.299 \u00c5, \u03b1 = 90.85\u00b0\u03b2 = 114.1\u00b0, \u03b3 = 79.99\u00b0Z = 1",
-            strunz_classification="10.CA.20",
-            mohs_scale_hardness="2\u20133",
-            crystal_symmetry="Space group: P1 or P1Point group: 1 or 1",
-            cleavage="Probable on {111}",
-            formula="C<sub>31</sub>H<sub>32</sub>N<sub>4</sub>Ni",
-            luster="Adamantine, sub-metallic",
-            crystal_system="Triclinic",
-            image_caption="Abelsonite from the Green River Formation, Uintah County, Utah, US",
-            image_filename="Abelsonite.jpg"
-        )
-
-        self.resp = self.client.get(reverse(
-            'mineral',
-            kwargs={'mineral_pk': self.mineral.pk}
-        ))
-
-    def test_return_status_okay(self):
-        self.assertEqual(self.resp.status_code, 200)
-
-    def test_return_layouthtml_as_template_used(self):
-        self.assertTemplateUsed(self.resp, 'website/layout.html')
-
-    def test_return_detailhtml_as_template_used(self):
-        self.assertTemplateUsed(self.resp, 'website/detail.html')
-
-    def test_return_info_of_added_mineral(self):
-        self.assertContains(self.resp, self.mineral.name)
