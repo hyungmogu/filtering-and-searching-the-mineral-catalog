@@ -15,9 +15,23 @@ def home_page(request):
     q_by_group = request.GET.get('q_by_group', '')
 
     if q:
-        minerals = Mineral.objects.filter(name__istartswith=q)
+        minerals = Mineral.objects.filter(
+            name__istartswith=q
+        ).order_by(
+            'name'
+        ).values(
+            'id', 'pk', 'name'
+        )
+
     elif q_by_group:
-        minerals = Mineral.objects.filter(group__iexact=q_by_group)
+        minerals = Mineral.objects.filter(
+            group__iexact=q_by_group
+        ).order_by(
+            'name'
+        ).values(
+            'id', 'pk', 'name'
+        )
+
     else:
         # import all items from database
         try:
