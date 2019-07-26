@@ -1,6 +1,22 @@
 {% extends 'website/layout.html' %}
 {% load static from staticfiles %}
 
+
+{% block precontent %}
+    <div class="text-centered">
+        {% for letter in alphabets %}
+            <a  class="{% if selected_letter == letter %} selected {% endif %}" href="?q={{ letter }}">{{ letter | upper }}</a>
+        {% endfor %}
+    </div>
+    <form class="text-centered" method="GET" action="">
+        <div style="display: flex;">
+            <input type="text" name="q_by_text" style="flex-grow: grow;" placeholder="Type here to filter by texts">
+            <input type="submit" value="search" class="minerals__anchor" style="width: 100px;">
+        </div>
+    </form>
+{% endblock %}
+
+
 {% block sidebar %}
     <ul>
         {% for item in group %}

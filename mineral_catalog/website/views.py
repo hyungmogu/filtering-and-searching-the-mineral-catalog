@@ -60,19 +60,29 @@ def home_page(request):
 
 
 def mineral_detail(request, mineral_pk):
+    alphabets = [chr(x) for x in range(97, 123)]
+
     group = Mineral.objects.order_by('group').values('group').distinct()
 
     q_by_group = request.GET.get('q_by_group', '')
+    q_by_text = request.GET.get('q_by_text', '')
+    q_by_letter = request.GET.get('q', '')
 
     if q_by_group:
         # redirect to homepage with the query parameter
         return redirect('/?q_by_group={0}'.format(q_by_group))
+    elif q_by_text:
+        return redirect('/?q_by_text={0}'.format(q_by_text))
+    elif q_by_letter:
+        # redirect to homepage with the query parameter
+        return redirect('/?q={0}'.format(q_by_letter))
 
     # fetch specific object based on pk
     mineral = get_object_or_404(Mineral, pk=mineral_pk)
 
     # load item to view
     return render(request, 'website/detail.html', {
+        'alphabets': alphabets,
         'mineral': mineral,
         'group': group
     })
