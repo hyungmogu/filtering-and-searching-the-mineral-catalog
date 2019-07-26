@@ -3,7 +3,7 @@
 {% block precontent %}
     <div class="text-centered">
         {% for letter in alphabets %}
-            <a href="?q={{ letter }}">{{ letter | upper }}</a>
+            <a  class="{% if selected_letter == letter %} selected {% endif %}" href="?q={{ letter }}">{{ letter | upper }}</a>
         {% endfor %}
     </div>
     <form class="text-centered" method="GET" action="">

@@ -54,7 +54,8 @@ def home_page(request):
         'minerals': minerals,
         'alphabets': alphabets,
         'group': group,
-        'selected_group': q_by_group
+        'selected_group': q_by_group,
+        'selected_letter': q
         })
 
 
