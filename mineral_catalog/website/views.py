@@ -1,13 +1,37 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
 import random
+import json
 
 from .models import Mineral
 
 
+def get_first_letters(minerals):
+    output = []
+    temp = set()
+
+    for mineral in minerals:
+        first_letter = mineral.name[0].upper()
+
+        if first_letter in temp:
+            continue
+
+        output.append(first_letter)
+        temp.add(first_letter)
+
+    return output
+
+
 # Create your views here.
 def home_page(request):
+
+    try:
+        minerals = Mineral.objects.all()
+    except Mineral.DoesNotExist:
+        minerals = []
+
     # initialize
-    alphabets = [chr(x) for x in range(97, 123)]
+    alphabets = get_first_letters(minerals)
     group = Mineral.objects.order_by('group').values('group').distinct()
 
     # get queries if exists
@@ -42,13 +66,6 @@ def home_page(request):
             'id', 'pk', 'name'
         )
 
-    else:
-        # import all items from database
-        try:
-            minerals = Mineral.objects.all()
-        except Mineral.DoesNotExist:
-            minerals = []
-
     # load items to view
     return render(request, 'website/home.html', {
         'minerals': minerals,
@@ -60,8 +77,13 @@ def home_page(request):
 
 
 def mineral_detail(request, mineral_pk):
-    alphabets = [chr(x) for x in range(97, 123)]
+    # import all items from database
+    try:
+        minerals = Mineral.objects.all()
+    except Mineral.DoesNotExist:
+        minerals = []
 
+    alphabets = get_first_letters(minerals)
     group = Mineral.objects.order_by('group').values('group').distinct()
 
     q_by_group = request.GET.get('q_by_group', '')
